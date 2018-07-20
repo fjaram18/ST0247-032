@@ -12,10 +12,15 @@ public class DigraphLista extends Digraph {
     public DigraphLista(int size) {
         super(size);
         vertices = new ArrayList<ArrayList<Pair<Integer, Integer>>>(size);
+        
+        for (int i = 0; i < size; i++) {
+            ArrayList<Pair<Integer, Integer>> verVacio = new ArrayList<Pair<Integer, Integer>>();
+            vertices.add(verVacio);
+        }
     }
 
     public void addArc(int source, int destination, int weight) {
-        vertices.get(source).add(new Pair<>(destination, weight));
+        vertices.get(source).add( new Pair<>(destination, weight) );
     }
 
     public ArrayList<Integer> getSuccessors(int vertex) {
@@ -32,8 +37,14 @@ public class DigraphLista extends Digraph {
     }
 
     public int getWeight(int source, int destination) {
-        //int weight = vertices.get(source)
+        ArrayList<Pair<Integer, Integer>> vertx  = vertices.get(source);
         
+        for (int i=0; i<vertx.size(); i++){
+            int adj = vertx.get(i).getKey();
+            if (adj == destination) {
+                return vertx.get(i).getValue();
+            }
+        }
         return 0;
     }
 
