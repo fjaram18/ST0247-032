@@ -96,19 +96,46 @@ public class Taller2 {
     }
 
     public static int queens(int n) {
-        int cont = 0;
-        ArrayList<int[]> permutaciones = new ArrayList<int[]>();
-        int[] chess; 
+        int cont = 0; 
+        int maxPos = n;
         
-        //Crear todas las posibles posiciones de n-reinas (1 por col)
-        for (int i = 0; i < n; i++) {
-            for(int j = 0; j < n; i++) {
-                
+        //Calcula el numero de posibilidades para un tablero de tamaño n
+        for (int i = 0; i < n-1; i++) {
+            maxPos = maxPos * n;
+        }
+        
+        //Arreglo de todos los posibles tableros
+         ArrayList<int[]> permutaciones = new ArrayList<int[]>(maxPos); 
+        
+        //Crea todas los posibles tableros de n-reinas y cuenta los que son validos
+        for (int i = 0; i < maxPos; i++) {
+            int[] tablero = crearTablero(n, i);
+            if (esValido(tablero)) {
+                cont++;
             }
         }
         
+        
         return cont;
-        // complete...
+    }
+    
+    
+    /*
+     * Crea un tablero unico basado en una conversion de un numero (menor o igual al total de posibilidades) a una
+     * base equivalente al tamaño n de un tablero 
+     */
+    public static int[] crearTablero(int base, int numero) {
+        int[] tablero = new int[base];
+        int count = 1;
+        
+        while(numero > 0) {
+            int remainder = numero % base;
+            numero =  numero / base;
+            tablero[base - count] = remainder;
+            count++;
+        }     
+        
+        return tablero;
     }
     
     
