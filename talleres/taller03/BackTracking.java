@@ -1,54 +1,58 @@
-
 /**
- * Write a description of class BackTracking here.
+ * Clase en la cual se implementan los metodos del Taller de Clase #3
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author Mauricio Toro, Mateo Agudelo, David Trefftz, Federico Jaramillo
  */
 public class BackTracking
 {
+    static int a = 0;
+    
     public static boolean puedoPonerReina(int r, int c, int[] tablero) {
-       
-        //Check hacia la izquierda
-        for (int i = 1; i <= c; i++) {
-            if (r == tablero[c - i] || r - i == tablero[c - i] || r + i == tablero[c - i]) return false;
+        
+        for (int i = 0; i < r; i++) {
+            if ((tablero[i] - c) == (r - i) || (c - tablero[i]) == (r - i) || tablero[i] == c) {
+                return false;
+            }
         }
         
         return true;
     }
     
-    
-    private static boolean nReinas(int r, int n, int[] tablero) {
-
+    public static int nReinas(int r, int n, int[] tablero) {
         
-        if(r == tablero.length ) {
-            
-            for (int i = 0; i < r; i++) {
-                System.out.println(tablero[i]);
-            }
-            
+        if(r == n) {
+            imprimirTablero(tablero);
+            a++;
         } else {
-            for (int c = 0; c < n; c++)
-             if(puedoPonerReina(r, c, tablero)) {
-                tablero[c] = r;
-                nReinas(r + 1, c, tablero);
-           // } else {
-                
-            //    if (r >= tablero.length - 1) {
-              //      nReinas(tablero[c-1] + 1, c-1, tablero);
-              //  } else {
-               //     nReinas(r + 1, c, tablero);
-              //  }
+            for (int c = 0; c < n; c++) {
+                tablero[r] = c;
+                 if(puedoPonerReina(r, c, tablero)) {
+                    nReinas(r + 1, n, tablero);
+                }
             }
-        }   
+        } 
         
-
+        return a;
     }
     
     public static int nReinas(int n) {
         int[] tablero = new int[n];
-        return nReinas(0, 0, tablero);
+        a = 0;
+        return nReinas(0, n, tablero);
     }
     
-    
+    public static void imprimirTablero(int[] tablero) {
+		int n = tablero.length;
+		System.out.print("    ");
+		for (int i = 0; i < n; ++i)
+			System.out.print(i + " ");
+		System.out.println("\n");
+		for (int i = 0; i < n; ++i) {
+			System.out.print(i + "   ");
+			for (int j = 0; j < n; ++j)
+				System.out.print((tablero[i] == j ? "Q" : "#") + " ");
+			System.out.println();
+		}
+		System.out.println();
+	}
 }
