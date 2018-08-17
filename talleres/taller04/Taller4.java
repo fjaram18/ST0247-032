@@ -111,20 +111,88 @@ public class Taller4 {
         }
     }
 
-    public static int recorrido(Digraph g) {
-        // complete...
-        return 0;
+/**
+     * Recorre todo un grafo completo desde el nodo v, 
+     * visitando todos los nodos una vez y volviendo a v.
+     * Se escoge el costo mínimo
+     */
+    static int costoMinimo = Integer.MAX_VALUE;
+    static int [] path;
+    
+    public static void recorridoCompleto(Digraph g, int v) {
+        int numVertices = g.size();
+        // visited[n] == true iff n has been visited
+        boolean [] visited = new boolean[numVertices];
+        // next stores the best path
+        int [] next = new int[numVertices + 1];
+        // best path
+        path = new int[numVertices + 1];
+        // depth of current level
+        int depth = 0;
+        // first node in the path is v
+        next[0] = v;
+        visited[v] = false;         // para que se "visite" al final
+        // call the recursive method
+        recorridoCompleto(g, v, depth + 1, next, visited);
+        // print cost of best path and best path
+        System.out.println(costoMinimo);
+        System.out.println(Arrays.toString(path));
     }
-
-    // recomendacion
-    private static int recorrido(Digraph g, int v, int[] unvisited) {
-        // complete...
-        return 0;
+    
+    /**
+     * depth: la profundidad que se va a llenar
+     */
+    public static void recorridoCompleto(Digraph g, int v, int depth, 
+        int [] next, boolean [] visited) {
+        int numVertices = g.size();
+        // A full path has been detected, comming back to v
+        if(depth == numVertices) {
+            next[numVertices] = v;
+            // compute the cost
+            int nuevoCosto = computeCost(g, next);
+            // does this path have a lower cost?
+            if (nuevoCosto < costoMinimo) {
+                costoMinimo = nuevoCosto;
+                savePath(next);
+            }
+            return;
+        }
+        // Try the unvisited neighbors that succed the node in the previous level
+        ArrayList<Integer> successors = g.getSuccessors(next[depth - 1]);
+        for(Integer u: successors) {
+            // Visit the non-visited successors
+            if(!visited[u]) {
+                // Visit u at this depth
+                next[depth] = u;       
+                // Mark u as visited
+                visited[u] = true;
+                // Recursive call for next level
+                recorridoCompleto(g, v, depth + 1, next, visited);
+                // Mark u as not visited, for possible next visits
+                visited[u] = false;
+            }
+        }
     }
-
-    // recomendacion
-    private static void dfs(Digraph g, int v, int[] costo) {
-        // complete...
+    
+    /**
+     * Computes the cost of the path stored in array next
+     */
+    public static int computeCost(Digraph g, int [] next) {
+        int numVertices = g.size();
+        int cost = 0 ;
+        for(int i = 0; i < numVertices; i++) {
+            cost += g.getWeight(next[i], next[i+1]);
+        }
+        return cost;
+    }
+    
+    /**
+     * Saves the current path in array "path"
+     */
+    public static void savePath(int [] next) {
+        for(int i = 0; i < next.length;i++) {
+            path[i] = next[i];
+        }
     }
 
     public static void probarHayCaminoDFS() {
