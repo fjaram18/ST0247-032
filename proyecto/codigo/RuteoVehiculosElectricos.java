@@ -385,7 +385,7 @@ public class RuteoVehiculosElectricos {
                             if (tiempoRuta < tiempoMinimo) {
                                 tiempoMinimo = tiempoRuta;
                                 estacionIntermedia = j;
-                                tiempoCarga = cuantaEnergia / pendienteDeCarga;
+                                tiempoCarga = (Q - cuantaEnergia) / pendienteDeCarga;
                             }
                         }
                     }
